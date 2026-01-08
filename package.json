@@ -50,6 +50,7 @@
   },
   "homepage": "https://github.com/code-yeongyu/oh-my-opencode#readme",
   "dependencies": {
+    "@parcel/watcher-linux-x64-glibc": "^2.5.1",
     "@ast-grep/cli": "^0.40.0",
     "@ast-grep/napi": "^0.40.0",
     "@clack/prompts": "^0.11.0",

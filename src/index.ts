@@ -1,3 +1,4 @@
+import "./polyfill";
 import type { Plugin } from "@opencode-ai/plugin";
 import {
   createTodoContinuationEnforcer,
