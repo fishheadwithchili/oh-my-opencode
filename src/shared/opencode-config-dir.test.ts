@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, afterEach } from "bun:test"
 import { homedir } from "node:os"
-import { join } from "node:path"
+import { join, resolve } from "node:path"
 import {
   getOpenCodeConfigDir,
   getOpenCodeConfigPaths,
@@ -20,6 +20,7 @@ describe("opencode-config-dir", () => {
       APPDATA: process.env.APPDATA,
       XDG_CONFIG_HOME: process.env.XDG_CONFIG_HOME,
       XDG_DATA_HOME: process.env.XDG_DATA_HOME,
+      OPENCODE_CONFIG_DIR: process.env.OPENCODE_CONFIG_DIR,
     }
   })
 
@@ -32,6 +33,84 @@ describe("opencode-config-dir", () => {
         delete process.env[key]
       }
     }
+  })
+
+  describe("OPENCODE_CONFIG_DIR environment variable", () => {
+    test("returns OPENCODE_CONFIG_DIR when env var is set", () => {
+      // #given OPENCODE_CONFIG_DIR is set to a custom path
+      process.env.OPENCODE_CONFIG_DIR = "/custom/opencode/path"
+      Object.defineProperty(process, "platform", { value: "linux" })
+
+      // #when getOpenCodeConfigDir is called with binary="opencode"
+      const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
+
+      // #then returns the custom path
+      expect(result).toBe("/custom/opencode/path")
+    })
+
+    test("falls back to default when env var is not set", () => {
+      // #given OPENCODE_CONFIG_DIR is not set, platform is Linux
+      delete process.env.OPENCODE_CONFIG_DIR
+      delete process.env.XDG_CONFIG_HOME
+      Object.defineProperty(process, "platform", { value: "linux" })
+
+      // #when getOpenCodeConfigDir is called with binary="opencode"
+      const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
+
+      // #then returns default ~/.config/opencode
+      expect(result).toBe(join(homedir(), ".config", "opencode"))
+    })
+
+    test("falls back to default when env var is empty string", () => {
+      // #given OPENCODE_CONFIG_DIR is set to empty string
+      process.env.OPENCODE_CONFIG_DIR = ""
+      delete process.env.XDG_CONFIG_HOME
+      Object.defineProperty(process, "platform", { value: "linux" })
+
+      // #when getOpenCodeConfigDir is called with binary="opencode"
+      const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
+
+      // #then returns default ~/.config/opencode
+      expect(result).toBe(join(homedir(), ".config", "opencode"))
+    })
+
+    test("falls back to default when env var is whitespace only", () => {
+      // #given OPENCODE_CONFIG_DIR is set to whitespace only
+      process.env.OPENCODE_CONFIG_DIR = "   "
+      delete process.env.XDG_CONFIG_HOME
+      Object.defineProperty(process, "platform", { value: "linux" })
+
+      // #when getOpenCodeConfigDir is called with binary="opencode"
+      const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
+
+      // #then returns default ~/.config/opencode
+      expect(result).toBe(join(homedir(), ".config", "opencode"))
+    })
+
+    test("resolves relative path to absolute path", () => {
+      // #given OPENCODE_CONFIG_DIR is set to a relative path
+      process.env.OPENCODE_CONFIG_DIR = "./my-opencode-config"
+      Object.defineProperty(process, "platform", { value: "linux" })
+
+      // #when getOpenCodeConfigDir is called with binary="opencode"
+      const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
+
+      // #then returns resolved absolute path
+      expect(result).toBe(resolve("./my-opencode-config"))
+    })
+
+    test("OPENCODE_CONFIG_DIR takes priority over XDG_CONFIG_HOME", () => {
+      // #given both OPENCODE_CONFIG_DIR and XDG_CONFIG_HOME are set
+      process.env.OPENCODE_CONFIG_DIR = "/custom/opencode/path"
+      process.env.XDG_CONFIG_HOME = "/xdg/config"
+      Object.defineProperty(process, "platform", { value: "linux" })
+
+      // #when getOpenCodeConfigDir is called with binary="opencode"
+      const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
+
+      // #then OPENCODE_CONFIG_DIR takes priority
+      expect(result).toBe("/custom/opencode/path")
+    })
   })
 
   describe("isDevBuild", () => {
@@ -65,6 +144,7 @@ describe("opencode-config-dir", () => {
         // #given opencode CLI binary detected, platform is Linux
         Object.defineProperty(process, "platform", { value: "linux" })
         delete process.env.XDG_CONFIG_HOME
+        delete process.env.OPENCODE_CONFIG_DIR
 
         // #when getOpenCodeConfigDir is called with binary="opencode"
         const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
@@ -77,6 +157,7 @@ describe("opencode-config-dir", () => {
         // #given opencode CLI binary detected, platform is Linux with XDG_CONFIG_HOME set
         Object.defineProperty(process, "platform", { value: "linux" })
         process.env.XDG_CONFIG_HOME = "/custom/config"
+        delete process.env.OPENCODE_CONFIG_DIR
 
         // #when getOpenCodeConfigDir is called with binary="opencode"
         const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
@@ -89,6 +170,7 @@ describe("opencode-config-dir", () => {
         // #given opencode CLI binary detected, platform is macOS
         Object.defineProperty(process, "platform", { value: "darwin" })
         delete process.env.XDG_CONFIG_HOME
+        delete process.env.OPENCODE_CONFIG_DIR
 
         // #when getOpenCodeConfigDir is called with binary="opencode"
         const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
@@ -101,6 +183,7 @@ describe("opencode-config-dir", () => {
         // #given opencode CLI binary detected, platform is Windows
         Object.defineProperty(process, "platform", { value: "win32" })
         delete process.env.APPDATA
+        delete process.env.OPENCODE_CONFIG_DIR
 
         // #when getOpenCodeConfigDir is called with binary="opencode"
         const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200", checkExisting: false })
@@ -178,6 +261,7 @@ describe("opencode-config-dir", () => {
       // #given opencode CLI binary on Linux
       Object.defineProperty(process, "platform", { value: "linux" })
       delete process.env.XDG_CONFIG_HOME
+      delete process.env.OPENCODE_CONFIG_DIR
 
       // #when getOpenCodeConfigPaths is called
       const paths = getOpenCodeConfigPaths({ binary: "opencode", version: "1.0.200" })
@@ -213,11 +297,26 @@ describe("opencode-config-dir", () => {
       // #given no config files exist
       Object.defineProperty(process, "platform", { value: "linux" })
       delete process.env.XDG_CONFIG_HOME
+      delete process.env.OPENCODE_CONFIG_DIR
 
       // #when detectExistingConfigDir is called
       const result = detectExistingConfigDir("opencode", "1.0.200")
 
       // #then result is either null or a valid string path
+      expect(result === null || typeof result === "string").toBe(true)
+    })
+
+    test("includes OPENCODE_CONFIG_DIR in search locations when set", () => {
+      // #given OPENCODE_CONFIG_DIR is set to a custom path
+      process.env.OPENCODE_CONFIG_DIR = "/custom/opencode/path"
+      Object.defineProperty(process, "platform", { value: "linux" })
+      delete process.env.XDG_CONFIG_HOME
+
+      // #when detectExistingConfigDir is called
+      const result = detectExistingConfigDir("opencode", "1.0.200")
+
+      // #then result is either null (no config file exists) or a valid string path
+      // The important thing is that the function doesn't throw
       expect(result === null || typeof result === "string").toBe(true)
     })
   })

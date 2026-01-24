@@ -20,13 +20,15 @@
       "items": {
         "type": "string",
         "enum": [
-          "Sisyphus",
+          "sisyphus",
+          "prometheus",
           "oracle",
           "librarian",
           "explore",
-          "frontend-ui-ux-engineer",
-          "document-writer",
-          "multimodal-looker"
+          "multimodal-looker",
+          "metis",
+          "momus",
+          "atlas"
         ]
       }
     },
@@ -35,7 +37,9 @@
       "items": {
         "type": "string",
         "enum": [
-          "playwright"
+          "playwright",
+          "frontend-ui-ux",
+          "git-master"
         ]
       }
     },
@@ -64,14 +68,16 @@
           "agent-usage-reminder",
           "non-interactive-env",
           "interactive-bash-session",
-          "empty-message-sanitizer",
           "thinking-block-validator",
           "ralph-loop",
-          "preemptive-compaction",
           "compaction-context-injector",
           "claude-code-hooks",
           "auto-slash-command",
-          "edit-error-recovery"
+          "edit-error-recovery",
+          "delegate-task-retry",
+          "prometheus-md-only",
+          "start-work",
+          "atlas"
         ]
       }
     },
@@ -80,7 +86,8 @@
       "items": {
         "type": "string",
         "enum": [
-          "init-deep"
+          "init-deep",
+          "start-work"
         ]
       }
     },
@@ -92,6 +99,18 @@
           "properties": {
             "model": {
               "type": "string"
+            },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "temperature": {
               "type": "number",
@@ -207,6 +226,18 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "temperature": {
               "type": "number",
               "minimum": 0,
@@ -315,11 +346,149 @@
             }
           }
         },
-        "Sisyphus": {
+        "sisyphus": {
           "type": "object",
           "properties": {
             "model": {
               "type": "string"
+            },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "temperature": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "top_p": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "prompt": {
+              "type": "string"
+            },
+            "prompt_append": {
+              "type": "string"
+            },
+            "tools": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            },
+            "disable": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "subagent",
+                "primary",
+                "all"
+              ]
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "permission": {
+              "type": "object",
+              "properties": {
+                "edit": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "bash": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "ask",
+                        "allow",
+                        "deny"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": [
+                          "ask",
+                          "allow",
+                          "deny"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "webfetch": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "doom_loop": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "external_directory": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "sisyphus-junior": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string"
+            },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "temperature": {
               "type": "number",
@@ -435,6 +604,18 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "temperature": {
               "type": "number",
               "minimum": 0,
@@ -543,11 +724,275 @@
             }
           }
         },
-        "Planner-Sisyphus": {
+        "prometheus": {
           "type": "object",
           "properties": {
             "model": {
               "type": "string"
+            },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "temperature": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "top_p": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "prompt": {
+              "type": "string"
+            },
+            "prompt_append": {
+              "type": "string"
+            },
+            "tools": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            },
+            "disable": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "subagent",
+                "primary",
+                "all"
+              ]
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "permission": {
+              "type": "object",
+              "properties": {
+                "edit": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "bash": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "ask",
+                        "allow",
+                        "deny"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": [
+                          "ask",
+                          "allow",
+                          "deny"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "webfetch": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "doom_loop": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "external_directory": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "metis": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string"
+            },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "temperature": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "top_p": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "prompt": {
+              "type": "string"
+            },
+            "prompt_append": {
+              "type": "string"
+            },
+            "tools": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            },
+            "disable": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "subagent",
+                "primary",
+                "all"
+              ]
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "permission": {
+              "type": "object",
+              "properties": {
+                "edit": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "bash": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "ask",
+                        "allow",
+                        "deny"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": [
+                          "ask",
+                          "allow",
+                          "deny"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "webfetch": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "doom_loop": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "external_directory": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "momus": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string"
+            },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "temperature": {
               "type": "number",
@@ -663,6 +1108,18 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "temperature": {
               "type": "number",
               "minimum": 0,
@@ -776,6 +1233,18 @@
           "properties": {
             "model": {
               "type": "string"
+            },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "temperature": {
               "type": "number",
@@ -891,233 +1360,17 @@
             "model": {
               "type": "string"
             },
-            "temperature": {
-              "type": "number",
-              "minimum": 0,
-              "maximum": 2
-            },
-            "top_p": {
-              "type": "number",
-              "minimum": 0,
-              "maximum": 1
-            },
-            "prompt": {
+            "variant": {
               "type": "string"
             },
-            "prompt_append": {
+            "category": {
               "type": "string"
             },
-            "tools": {
-              "type": "object",
-              "propertyNames": {
+            "skills": {
+              "type": "array",
+              "items": {
                 "type": "string"
-              },
-              "additionalProperties": {
-                "type": "boolean"
               }
-            },
-            "disable": {
-              "type": "boolean"
-            },
-            "description": {
-              "type": "string"
-            },
-            "mode": {
-              "type": "string",
-              "enum": [
-                "subagent",
-                "primary",
-                "all"
-              ]
-            },
-            "color": {
-              "type": "string",
-              "pattern": "^#[0-9A-Fa-f]{6}$"
-            },
-            "permission": {
-              "type": "object",
-              "properties": {
-                "edit": {
-                  "type": "string",
-                  "enum": [
-                    "ask",
-                    "allow",
-                    "deny"
-                  ]
-                },
-                "bash": {
-                  "anyOf": [
-                    {
-                      "type": "string",
-                      "enum": [
-                        "ask",
-                        "allow",
-                        "deny"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "propertyNames": {
-                        "type": "string"
-                      },
-                      "additionalProperties": {
-                        "type": "string",
-                        "enum": [
-                          "ask",
-                          "allow",
-                          "deny"
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "webfetch": {
-                  "type": "string",
-                  "enum": [
-                    "ask",
-                    "allow",
-                    "deny"
-                  ]
-                },
-                "doom_loop": {
-                  "type": "string",
-                  "enum": [
-                    "ask",
-                    "allow",
-                    "deny"
-                  ]
-                },
-                "external_directory": {
-                  "type": "string",
-                  "enum": [
-                    "ask",
-                    "allow",
-                    "deny"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "frontend-ui-ux-engineer": {
-          "type": "object",
-          "properties": {
-            "model": {
-              "type": "string"
-            },
-            "temperature": {
-              "type": "number",
-              "minimum": 0,
-              "maximum": 2
-            },
-            "top_p": {
-              "type": "number",
-              "minimum": 0,
-              "maximum": 1
-            },
-            "prompt": {
-              "type": "string"
-            },
-            "prompt_append": {
-              "type": "string"
-            },
-            "tools": {
-              "type": "object",
-              "propertyNames": {
-                "type": "string"
-              },
-              "additionalProperties": {
-                "type": "boolean"
-              }
-            },
-            "disable": {
-              "type": "boolean"
-            },
-            "description": {
-              "type": "string"
-            },
-            "mode": {
-              "type": "string",
-              "enum": [
-                "subagent",
-                "primary",
-                "all"
-              ]
-            },
-            "color": {
-              "type": "string",
-              "pattern": "^#[0-9A-Fa-f]{6}$"
-            },
-            "permission": {
-              "type": "object",
-              "properties": {
-                "edit": {
-                  "type": "string",
-                  "enum": [
-                    "ask",
-                    "allow",
-                    "deny"
-                  ]
-                },
-                "bash": {
-                  "anyOf": [
-                    {
-                      "type": "string",
-                      "enum": [
-                        "ask",
-                        "allow",
-                        "deny"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "propertyNames": {
-                        "type": "string"
-                      },
-                      "additionalProperties": {
-                        "type": "string",
-                        "enum": [
-                          "ask",
-                          "allow",
-                          "deny"
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "webfetch": {
-                  "type": "string",
-                  "enum": [
-                    "ask",
-                    "allow",
-                    "deny"
-                  ]
-                },
-                "doom_loop": {
-                  "type": "string",
-                  "enum": [
-                    "ask",
-                    "allow",
-                    "deny"
-                  ]
-                },
-                "external_directory": {
-                  "type": "string",
-                  "enum": [
-                    "ask",
-                    "allow",
-                    "deny"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "document-writer": {
-          "type": "object",
-          "properties": {
-            "model": {
-              "type": "string"
             },
             "temperature": {
               "type": "number",
@@ -1233,6 +1486,144 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "temperature": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "top_p": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "prompt": {
+              "type": "string"
+            },
+            "prompt_append": {
+              "type": "string"
+            },
+            "tools": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            },
+            "disable": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "subagent",
+                "primary",
+                "all"
+              ]
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "permission": {
+              "type": "object",
+              "properties": {
+                "edit": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "bash": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "ask",
+                        "allow",
+                        "deny"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": [
+                          "ask",
+                          "allow",
+                          "deny"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "webfetch": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "doom_loop": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "external_directory": {
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "atlas": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string"
+            },
+            "variant": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "temperature": {
               "type": "number",
               "minimum": 0,
@@ -1343,6 +1734,89 @@
         }
       }
     },
+    "categories": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "variant": {
+            "type": "string"
+          },
+          "temperature": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "top_p": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "maxTokens": {
+            "type": "number"
+          },
+          "thinking": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "enabled",
+                  "disabled"
+                ]
+              },
+              "budgetTokens": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "reasoningEffort": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "textVerbosity": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "tools": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          },
+          "prompt_append": {
+            "type": "string"
+          },
+          "is_unstable_agent": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
     "claude_code": {
       "type": "object",
       "properties": {
@@ -1374,9 +1848,6 @@
           }
         }
       }
-    },
-    "google_auth": {
-      "type": "boolean"
     },
     "sisyphus_agent": {
       "type": "object",
@@ -1411,14 +1882,6 @@
         },
         "auto_resume": {
           "type": "boolean"
-        },
-        "preemptive_compaction": {
-          "type": "boolean"
-        },
-        "preemptive_compaction_threshold": {
-          "type": "number",
-          "minimum": 0.5,
-          "maximum": 0.95
         },
         "truncate_all_tool_outputs": {
           "type": "boolean"
@@ -1460,7 +1923,6 @@
                 "todowrite",
                 "todoread",
                 "lsp_rename",
-                "lsp_code_action_resolve",
                 "session_read",
                 "session_write",
                 "session_search"
@@ -1513,9 +1975,6 @@
               }
             }
           }
-        },
-        "dcp_for_compaction": {
-          "type": "boolean"
         }
       }
     },
@@ -1673,7 +2132,7 @@
           },
           "additionalProperties": {
             "type": "number",
-            "minimum": 1
+            "minimum": 0
           }
         },
         "modelConcurrency": {
@@ -1683,8 +2142,33 @@
           },
           "additionalProperties": {
             "type": "number",
-            "minimum": 1
+            "minimum": 0
           }
+        },
+        "staleTimeoutMs": {
+          "type": "number",
+          "minimum": 60000
+        }
+      }
+    },
+    "notification": {
+      "type": "object",
+      "properties": {
+        "force_enable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "git_master": {
+      "type": "object",
+      "properties": {
+        "commit_footer": {
+          "default": true,
+          "type": "boolean"
+        },
+        "include_co_authored_by": {
+          "default": true,
+          "type": "boolean"
         }
       }
     }
